@@ -1,5 +1,3 @@
-# SOC-Lab-001-Suspicious-Login-Investigation
-
 # SOC Lab 001: Suspicious Login Investigation
 
 ## Overview
@@ -67,4 +65,3 @@ This is a simulated learning exercise, not a production security investigation. 
 
 ## Author
 Tyresse Bracy — Aspiring SOC Analyst
-

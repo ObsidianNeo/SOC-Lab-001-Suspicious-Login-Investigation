@@ -52,8 +52,8 @@ source="auth_logs.csv" username="jbrown"
 - Incident report: `SOC-Lab-001-Incident-Report.txt`
 - Sample data: `auth_logs.csv`
 
-- Failed login analysis evidence: [View screenshot](evidence-failed-logins.png)
-- 
+
+ 
 ## Skills Demonstrated
 - Log ingestion and analysis
 - SPL filtering and aggregation

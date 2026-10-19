@@ -1,0 +1,30 @@
+# SOC Lab 001 — Investigation Notes
+
+**Project:** Suspicious Login Investigation  
+**Tool:** Splunk Enterprise  
+**Dataset:** Simulated authentication logs  
+**Status:** Initial investigation completed
+
+## 1. Findings
+
+- Imported 8 authentication events into Splunk successfully.
+- Identified 5 failed login attempts across two source IP addresses.
+- `203.0.113.45` generated 3 failed login attempts followed by 1 successful login for `jbrown`.
+- `198.51.100.22` generated 2 failed login attempts for `admin`.
+- The `jbrown` account had 5 total login events in the dataset.
+- The successful login from `203.0.113.45` occurred after its three failed attempts.
+
+## 2. Initial Assessment
+
+The repeated failed login attempts followed by a successful login from the same source IP warrant further investigation. This pattern could be consistent with password guessing or another authentication issue, but the simulated data alone does not establish account compromise.
+
+## 3. Recommended Next Steps
+
+- Review authentication logs from a wider time window.
+- Determine whether the source IP and login activity are expected.
+- Check for additional suspicious activity associated with `jbrown`.
+- Escalate according to the organization's incident response procedures if corroborating evidence is found.
+
+## 4. Evidence Limitation
+
+This exercise uses simulated log data and documentation-only IP addresses. It demonstrates investigation techniques but does not represent a confirmed real-world security incident.

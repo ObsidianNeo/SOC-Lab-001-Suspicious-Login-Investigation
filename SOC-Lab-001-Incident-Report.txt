@@ -1,0 +1,83 @@
+# SOC Lab 001: Suspicious Login Investigation
+
+**Analyst:** Tyresse Bracy  
+**Tool:** Splunk Enterprise  
+**Environment:** Windows 10  
+**Log Source:** `auth_logs.csv`  
+**Investigation Type:** Authentication Log Analysis  
+**Severity:** Medium — Preliminary, simulated exercise  
+**Status:** Initial triage completed
+
+## 1. Executive Summary
+
+An analysis of eight simulated authentication events identified repeated failed login attempts against two accounts. One source IP address, `203.0.113.45`, generated three failed login attempts for the `jbrown` account, followed by a successful login from the same address.
+
+This pattern warrants further investigation but does not independently confirm unauthorized access or account compromise.
+
+## 2. Key Findings
+
+| Finding | Evidence |
+|---|---|
+| Failed authentication events | 5 |
+| Source IP `203.0.113.45` | 3 failed attempts and 1 successful login |
+| Source IP `198.51.100.22` | 2 failed attempts against `admin` |
+| Total events for `jbrown` | 5 |
+| Total events for `asmith` | 1 |
+| Total events for `admin` | 2 |
+
+## 3. Investigation Methodology
+
+The following Splunk Search Processing Language (SPL) queries were used.
+
+**Identify failed logins**
+```spl
+source="auth_logs.csv" status="failed"
+```
+
+**Count failures by source IP**
+```spl
+source="auth_logs.csv" status="failed"
+| stats count by src_ip
+| sort - count
+```
+
+**Review the suspicious source IP timeline**
+```spl
+source="auth_logs.csv" src_ip="203.0.113.45"
+| sort 0 _time
+| table _time username src_ip action status
+```
+
+**Summarize authentication outcomes by account**
+```spl
+source="auth_logs.csv" action="login"
+| stats count(eval(status="failed")) as failed_logins count(eval(status="success")) as successful_logins by username
+| sort - failed_logins
+```
+
+## 4. Analyst Assessment
+
+The sequence of repeated failed attempts followed by a successful login from the same source IP is a potentially suspicious authentication pattern.
+
+Possible explanations include password guessing, a legitimate user entering an incorrect password repeatedly, or other authentication issues. Additional contextual evidence is required to distinguish between these possibilities.
+
+## 5. Recommended Actions
+
+1. Review authentication activity from the same source over a broader time window.
+2. Verify whether the successful login was expected and authorized.
+3. Correlate with endpoint, VPN, identity-provider, and multifactor authentication logs where available.
+4. Escalate for further investigation if additional indicators support suspected account compromise.
+
+## 6. Limitations
+
+This investigation used eight simulated events. The IP addresses are reserved for documentation and examples, not real-world attribution. No actual compromise was detected or confirmed.
+
+## 7. Skills Demonstrated
+
+- Splunk data ingestion and source-type configuration
+- SPL filtering and aggregation
+- Failed-login analysis
+- Source IP investigation
+- Authentication timeline reconstruction
+- Evidence-based incident documentation
+- Security investigation limitations and escalation recommendations
